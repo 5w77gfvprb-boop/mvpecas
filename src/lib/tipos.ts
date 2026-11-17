@@ -1,5 +1,5 @@
 export type Cliente = { id: string; nome: string; telefone: string | null; observacoes: string | null; ativo: boolean };
-export type Oficina = { id: string; nome: string; cidade: string | null; telefone: string | null; observacoes: string | null; ativo: boolean };
+export type Oficina = { id: string; nome: string; cidade: string | null; endereco: string | null; telefone: string | null; observacoes: string | null; ativo: boolean };
 export type Fornecedor = { id: string; nome: string; telefone: string | null; observacoes: string | null; ativo: boolean };
 
 export type Etapa =

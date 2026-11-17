@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Car, ClipboardList, Download, LogOut, Menu, Plus, Receipt, Settings, Users } from "lucide-react";
+import { BarChart3, Car, Truck, ClipboardList, Download, LogOut, Menu, Plus, Receipt, Settings, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
@@ -39,6 +39,7 @@ export function useApp(): AppCtx {
 const NAV: { href: string; label: string; icon: typeof Car; soDesktop?: boolean; soCelular?: boolean }[] = [
   { href: "/", label: "A fazer", icon: ClipboardList },
   { href: "/carros", label: "Carros", icon: Car },
+  { href: "/envios", label: "Envios", icon: Truck, soDesktop: true },
   { href: "/cobrancas", label: "Cobranças", icon: Receipt },
   { href: "/relatorios", label: "Relatórios", icon: BarChart3, soDesktop: true },
   { href: "/cadastros", label: "Cadastros", icon: Users, soDesktop: true },

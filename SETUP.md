@@ -16,6 +16,7 @@ Leva uns 20 minutos. Faça na ordem.
 3. Abra o arquivo `supabase/migrations/0001_base.sql` (no computador, com o Bloco de Notas), copie **tudo**, cole na tela do Supabase e clique em **Run**.
    Deve aparecer *Success. No rows returned*.
 4. Clique de novo em **New query**, faça o mesmo com o arquivo `supabase/migrations/0002_backup_ativo.sql` e clique em **Run**.
+5. Mais uma **New query** com o arquivo `supabase/migrations/0003_endereco_oficina.sql` → **Run**.
 
 > Rodou duas vezes sem querer? Não tem problema: os arquivos não apagam nem duplicam nada.
 > Ele já cadastra os clientes **Protivaço** e **Aliar** (dá para mudar em Cadastros).
@@ -109,7 +110,9 @@ O plano grátis pausa o banco depois de 7 dias sem uso. O site já vem com uma r
    - Para peças diferentes em momentos diferentes: toque nos quadradinhos das peças e use a barra de baixo (*Comprei*, *Enviei*, *Entregue*…).
 3. **A fazer** (tela inicial) mostra tudo o que está pendente, de todos os carros: comprar, enviar, confirmar entrega, mandar nota, esperar o contador, cobrar, receber (com vencidos em vermelho), nota de fornecedor pendente, peças sem preço.
 4. **Cobranças**: uma cobrança pode ter um carro ou vários carros do mesmo cliente, em 1 parcela ou 30/60/90 (boleto, cheque, pix…). *Copiar texto*/*WhatsApp* manda a lista para o cliente; *Extrato do cliente* mostra tudo o que ele deve.
-5. **Relatórios**: vendido, custo, lucro, por cliente e por fornecedor; *Planilha (Excel)* baixa tudo do mês.
+5. **Envios** (no celular: botão *Envios de hoje* no A fazer, ou **Mais → Envios**): todas as peças marcadas como enviadas hoje, ontem, na semana, no mês ou num período, separadas por oficina → carro → peças, com o cliente e o aviso "ainda faltam X peças deste carro". **WhatsApp** manda o texto pronto para o entregador; também tem **PDF** e **Excel**. Ponha o endereço das oficinas em Cadastros para sair no relatório.
+6. **Relatório** (dentro do carro): PDF ou Excel para a contabilidade, com data, placa, modelo, oficina (opcional) e peças com valor.
+7. **Relatórios**: vendido, custo, lucro, por cliente e por fornecedor; *Planilha (Excel)* baixa tudo do mês.
 
 ### Errou? Dá para voltar
 - Depois de cada ação aparece **Desfazer** no aviso do topo.

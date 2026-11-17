@@ -1,6 +1,7 @@
 "use client";
 
 import { AlertTriangle, Check, ChevronDown, ChevronRight, Copy, FileText, PackageCheck, Receipt, ShoppingCart, Truck } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { msgErro, useApp } from "@/components/AppShell";
 import { CompraModal, marcarPasso } from "@/components/Pecas";
@@ -114,6 +115,7 @@ export default function AFazer() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-lg font-semibold">A fazer</h1>
+        <Link href="/envios" className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm font-medium md:hidden"><Truck size={15} /> Envios de hoje</Link>
         {cad.clientes.length > 1 ? (
           <select className={`${inputCls} !w-auto`} value={cliente} onChange={(e) => setCliente(e.target.value)} aria-label="Filtrar cliente">
             <option value="">Todos os clientes</option>

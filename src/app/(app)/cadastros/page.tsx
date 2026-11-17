@@ -6,7 +6,7 @@ import { msgErro, useApp } from "@/components/AppShell";
 import { Badge, Button, ConfirmDialog, Field, Modal, Segmentado, Vazio, inputCls } from "@/components/ui";
 
 type Tab = "clientes" | "oficinas" | "fornecedores";
-type Reg = { id: string; nome: string; telefone: string | null; observacoes: string | null; ativo: boolean; cidade?: string | null };
+type Reg = { id: string; nome: string; telefone: string | null; observacoes: string | null; ativo: boolean; cidade?: string | null; endereco?: string | null };
 const NOMES: Record<Tab, { um: string; varios: string }> = {
   clientes: { um: "cliente", varios: "Clientes" }, oficinas: { um: "oficina", varios: "Oficinas" }, fornecedores: { um: "fornecedor", varios: "Fornecedores" },
 };
@@ -54,6 +54,7 @@ function EditarCadastro({ tab, reg, onClose }: { tab: Tab; reg: Reg | null; onCl
   const [nome, setNome] = useState(reg?.nome ?? "");
   const [tel, setTel] = useState(reg?.telefone ?? "");
   const [cidade, setCidade] = useState(reg?.cidade ?? "");
+  const [endereco, setEndereco] = useState(reg?.endereco ?? "");
   const [obs, setObs] = useState(reg?.observacoes ?? "");
   const [ativo, setAtivo] = useState(reg?.ativo ?? true);
   const [juntar, setJuntar] = useState("");
@@ -65,7 +66,7 @@ function EditarCadastro({ tab, reg, onClose }: { tab: Tab; reg: Reg | null; onCl
     setErro("");
     if (!nome.trim()) { setErro("Escreva o nome."); return; }
     const dados: Record<string, unknown> = { nome: nome.trim().replace(/\s{2,}/g, " "), telefone: tel.trim() || null, observacoes: obs.trim() || null, ativo };
-    if (tab === "oficinas") dados.cidade = cidade.trim() || null;
+    if (tab === "oficinas") { dados.cidade = cidade.trim() || null; dados.endereco = endereco.trim() || null; }
     const { error } = reg ? await sb.from(tab).update(dados).eq("id", reg.id) : await sb.from(tab).insert(dados);
     if (error) { setErro(msgErro(error)); return; }
     await recarregarCadastros(); atualizar(); notify("Salvo."); onClose();
@@ -90,6 +91,7 @@ function EditarCadastro({ tab, reg, onClose }: { tab: Tab; reg: Reg | null; onCl
           <Field label="Telefone / WhatsApp"><input className={inputCls} inputMode="tel" value={tel} onChange={(e) => setTel(e.target.value)} /></Field>
           {tab === "oficinas" ? <Field label="Cidade"><input className={inputCls} value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Ipatinga" /></Field> : null}
         </div>
+        {tab === "oficinas" ? <Field label="Endereço (vai no relatório do entregador)"><input className={inputCls} value={endereco} onChange={(e) => setEndereco(e.target.value)} placeholder="Rua, número, bairro" /></Field> : null}
         <Field label="Observações"><textarea className={`${inputCls} min-h-14`} value={obs} onChange={(e) => setObs(e.target.value)} /></Field>
         {reg ? <label className="flex items-center gap-2 text-sm"><input type="checkbox" className="h-4 w-4" checked={ativo} onChange={(e) => setAtivo(e.target.checked)} /> Ativo (inativo some das listas de escolha, mas o histórico fica)</label> : null}
 

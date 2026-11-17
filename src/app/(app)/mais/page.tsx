@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, ChevronRight, Download, KeyRound, LogOut, Settings, Trash2, Users } from "lucide-react";
+import { Truck, BarChart3, ChevronRight, Download, KeyRound, LogOut, Settings, Trash2, Users } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/AppShell";
@@ -9,6 +9,7 @@ export default function Mais() {
   const { sb } = useApp();
   const router = useRouter();
   const itens = [
+    { href: "/envios", label: "Envios (relatório do entregador)", icon: Truck },
     { href: "/relatorios", label: "Relatórios", icon: BarChart3 },
     { href: "/cadastros", label: "Clientes, oficinas e fornecedores", icon: Users },
     { href: "/ajustes#backup", label: "Backup", icon: Download },
