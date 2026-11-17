@@ -6,6 +6,7 @@ import { msgErro, useApp } from "@/components/AppShell";
 import { Combo } from "@/components/Combo";
 import { EditorPecas } from "@/components/NovoPedido";
 import { CompraModal, ItemModal, marcarPasso, PASSOS, PassoModal, type Passo } from "@/components/Pecas";
+import { RelatorioCarro } from "@/components/RelatorioCarro";
 import { Badge, Button, ConfirmDialog, Field, Modal, inputCls } from "@/components/ui";
 import { acharOuCriar, atualizarComDesfazer } from "@/lib/acoes";
 import { textoContador } from "@/lib/textos";
@@ -21,7 +22,8 @@ type Sub =
   | { t: "nota"; nota?: NotaVenda; emitir?: boolean }
   | { t: "adicionar" }
   | { t: "historico" }
-  | { t: "excluir" };
+  | { t: "excluir" }
+  | { t: "relatorio" };
 
 export default function CarroModal({ id, onClose }: { id: string; onClose: () => void }) {
   const { sb, notify, versao, atualizar, novaCobranca, abrirCobranca } = useApp();
@@ -134,6 +136,7 @@ export default function CarroModal({ id, onClose }: { id: string; onClose: () =>
             {p.observacoes ? <p className="whitespace-pre-wrap text-xs text-neutral-700">{p.observacoes}</p> : null}
           </div>
           <div className="relative flex gap-1.5">
+            <Button className="!px-2.5" onClick={() => setSub({ t: "relatorio" })}><FileText size={15} /> Relatório</Button>
             <Button className="!px-2.5" onClick={() => setSub({ t: "pedido" })}><Pencil size={15} /> Editar</Button>
             <Button className="!px-2.5" aria-label="Mais opções" onClick={() => setMenu((m) => !m)}><MoreHorizontal size={16} /></Button>
             {menu ? (
@@ -162,7 +165,7 @@ export default function CarroModal({ id, onClose }: { id: string; onClose: () =>
           {naoCompradas.length > 0 ? <><span>{naoCompradas.length} peça(s) para comprar.</span><Button variant="primary" onClick={() => setSub({ t: "compra", itens: naoCompradas })}><ShoppingCart size={15} /> Marcar compra</Button></> : null}
           {paraEnviar.length > 0 ? <><span>{paraEnviar.length} comprada(s) para enviar.</span><Button variant="primary" onClick={() => passoEmLote(paraEnviar, "enviado")}><Truck size={15} /> Enviei {paraEnviar.length > 1 ? "todas" : ""} hoje</Button></> : null}
           {paraEntregar.length > 0 ? <><span>{paraEntregar.length} enviada(s) esperando entrega.</span><Button variant="primary" onClick={() => passoEmLote(paraEntregar, "entregue")}><PackageCheck size={15} /> Entregue{paraEntregar.length > 1 ? "s" : ""} hoje</Button></> : null}
-          {!p.dispensa_nf && semNota.length > 0 && ativos.some((i) => i.enviado_em) ? <><span>{semNota.length} peça(s) sem nota de venda.</span><span className="flex gap-1.5"><Button onClick={() => copiarContador(semNota)}><Copy size={15} /> Copiar p/ contador</Button><Button variant="primary" onClick={() => setSub({ t: "nota" })}><FileText size={15} /> Mandei ao contador</Button></span></> : null}
+          {!p.dispensa_nf && semNota.length > 0 && ativos.some((i) => i.enviado_em) ? <><span>{semNota.length} peça(s) sem nota de venda.</span><span className="flex flex-wrap gap-1.5"><Button onClick={() => setSub({ t: "relatorio" })}><FileText size={15} /> Relatório</Button><Button onClick={() => copiarContador(semNota)}><Copy size={15} /> Copiar</Button><Button variant="primary" onClick={() => setSub({ t: "nota" })}><FileText size={15} /> Mandei ao contador</Button></span></> : null}
           {notaAguardando ? <><span>Nota enviada ao contador em {dataBR(notaAguardando.enviada_em)}, ainda sem número.</span><Button variant="primary" onClick={() => setSub({ t: "nota", nota: notaAguardando, emitir: true })}><Check size={15} /> Nota emitida</Button></> : null}
           {semCobranca.length > 0 && ativos.some((i) => i.entregue_em) ? <><span>{semCobranca.length} peça(s) ainda não cobrada(s).</span><Button variant="primary" onClick={() => novaCobranca({ cliente_id: p.cliente_id, itens: semCobranca.map((i) => i.id) })}><Receipt size={15} /> Cobrar</Button></> : null}
           {sobras.length > 0 ? <><span>{sobras.length} peça(s) cancelada(s) já comprada(s): devolver ao fornecedor ou guardar.</span><Button onClick={() => loteSimples(sobras, { sobra_resolvida: true }, "Marcado como resolvido.")}><Check size={15} /> Resolvido</Button></> : null}
@@ -243,6 +246,7 @@ export default function CarroModal({ id, onClose }: { id: string; onClose: () =>
       {sub?.t === "pedido" ? <PedidoModal p={p} onClose={() => setSub(null)} /> : null}
       {sub?.t === "nota" ? <NotaModal p={p} itens={ativos} nota={sub.nota} emitir={sub.emitir} onClose={() => setSub(null)} /> : null}
       {sub?.t === "adicionar" ? <AdicionarModal pedidoId={p.id} onClose={() => setSub(null)} /> : null}
+      {sub?.t === "relatorio" ? <RelatorioCarro p={p} itens={itens} onClose={() => setSub(null)} /> : null}
       {sub?.t === "historico" ? <HistoricoModal pedidoId={p.id} itens={itens} onClose={() => setSub(null)} /> : null}
       {sub?.t === "excluir" ? (
         <ConfirmDialog titulo="Excluir carro" perigo confirmar="Mandar para a lixeira"
